@@ -1,0 +1,102 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: regional
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+  replication-type: regional-pd
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: local-ssd
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+#allowVolumeExpansion: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tezos-public-node
+  labels:
+    app: tezos-public-node
+spec:
+  ports:
+  - port: 9732
+    name: p2p
+  - port: 9489
+    name: metrics
+  - port: 8732
+    name: rpc
+  selector:
+    app: tezos-public-node
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tezos-public-node
+spec:
+  selector:
+    matchLabels:
+      app: tezos-public-node # Label selector that determines which Pods belong to the StatefulSet
+                 # Must match spec: template: metadata: labels
+  serviceName: "tezos-public-node"
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: tezos-public-node # Pod template's label selector
+    spec:
+      securityContext:
+        fsGroup: 100
+      containers:
+      - name: tezos-public-node
+        image: tezos-public-node-with-probes
+        args: [ "tezos-node" ]
+        ports:
+        - containerPort: 9732
+          name: tezos-port
+        volumeMounts:
+        - name: tezos-public-node-pv-claim
+          mountPath: /var/run/tezos/node
+        resources:
+          limits:
+            cpu: 0
+        livenessProbe:
+          # pod is considered dead when number of connections drops to zero
+          exec:
+            command:
+            - /usr/local/bin/does-tezos-node-have-connections.sh
+          periodSeconds: 10
+          failureThreshold: 50
+        env:
+        - name: TEZOS_NETWORK
+          valueFrom:
+            configMapKeyRef:
+              name: tezos-configmap
+              key: TEZOS_NETWORK
+        imagePullPolicy: Always
+      initContainers:
+      - name: tezos-snapshot-downloader
+        image: tezos-snapshot-downloader
+        volumeMounts:
+        - name: tezos-public-node-pv-claim
+          mountPath: /var/run/tezos/node
+        env:
+        - name: SNAPSHOT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: tezos-configmap
+              key: SNAPSHOT_URL
+        - name: TEZOS_NETWORK
+          valueFrom:
+            configMapKeyRef:
+              name: tezos-configmap
+              key: TEZOS_NETWORK
+        resources:
+          limits:
+            cpu: 0
+        imagePullPolicy: Always

@@ -1,0 +1,25 @@
+bases:
+- ./../tezos-public-node-base
+
+imageTags:
+  - name: tezos/tezos
+    newTag: ${tezos_version}
+  - name: tezos-snapshot-downloader
+    newName: gcr.io/${project}/tezos-snapshot-downloader
+    newTag: ${kubernetes_namespace}-latest
+
+configMapGenerator:
+- name: tezos-configmap
+  literals:
+  - NODE_HOST="localhost"
+  - TEZOS_NETWORK=${tezos_network}"
+  - PROTOCOL="${protocol}"
+  - KUBERNETES_NAME_PREFIX="${kubernetes_name_prefix}"
+  - PROTOCOL_SHORT="${protocol_short}"
+  - DATA_DIR=/run/tezos
+  - SNAPSHOT_URL="${full_snapshot_url}"
+
+patchesStrategicMerge:
+- regionalpvpatch.yaml
+- prefixedpvnode.yaml
+- nodepool.yaml

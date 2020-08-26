@@ -1,2 +1,2 @@
 resources:
-- tezos-public-node-stateful-set.yaml
+- tezos-public-node-deployment.yaml

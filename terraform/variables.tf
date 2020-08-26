@@ -82,7 +82,7 @@ variable "kubernetes_pool_name" {
 }
 
 #
-# Tezos node and baker options
+# Tezos node and snapshotter options
 # ------------------------------
 
 variable "tezos_network" {
@@ -93,7 +93,7 @@ variable "tezos_network" {
 
 variable "tezos_version" {
   type =string
-  description = "The tezos container version for sentry (public) nodes. Should be hard-coded to a version from https://hub.docker.com/r/tezos/tezos/tags. Not recommended to set to a rolling tag like 'mainnet', because it may break unexpectedly. Example: mainnet_06398944_20200211142914"
+  description = "The tezos container software version"
   default = "latest-release"
 }
 
@@ -113,4 +113,22 @@ variable "full_snapshot_url" {
   type = string
   description = "url of the snapshot of type full to download"
   default = ""
+}
+
+variable "firebase_project" {
+  type = string
+  description = "name of the firebase project for the snapshot website"
+  default = ""
+}
+
+variable "firebase_token" {
+  type = string
+  description = "firebase token (secret) to publish to the xtz-shots website"
+  default = ""
+}
+
+variable "snapshot_cron_schedule" {
+  type = string
+  description = "the schedule on which to generate snapshots, in cron format"
+  default = "7 13 * * *"
 }

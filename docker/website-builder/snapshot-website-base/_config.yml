@@ -1,0 +1,11 @@
+title: Tezos Snapshots
+author: MIDL.dev
+description: > # this means to ignore newlines until "show_excerpts:"
+  Tezos Snapshots
+favicon: "./favicon.ico" # set the favicon of the site 
+
+show_excerpts: false # set to true to show excerpts on the homepage
+  
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag

@@ -4,9 +4,12 @@ module "terraform-gke-blockchain" {
   billing_account = var.billing_account
   terraform_service_account_credentials = var.terraform_service_account_credentials
   project = var.project
-  project_prefix = "tezos"
+  project_prefix = "tzshots"
+  # need k8s 1.17 to take snapshots of volumes
+  release_channel = "RAPID"
   region = var.region
   node_locations = var.node_locations
+  node_pools = { "blockchain-pool" : { "node_count": 1, "instance_type": "e2-standard-4" }}
 }
 
 # Query the client configuration for our current service account, which should

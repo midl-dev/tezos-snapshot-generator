@@ -6,7 +6,38 @@ locals {
        "protocol_short": var.protocol_short,
        "kubernetes_namespace": var.kubernetes_namespace,
        "kubernetes_name_prefix": var.kubernetes_name_prefix,
+       "firebase_project": var.firebase_project,
+       "firebase_token": var.firebase_token,
+       "website_bucket_url": google_storage_bucket.snapshot_bucket.url,
+       "kubernetes_pool_name": var.kubernetes_pool_name,
        "full_snapshot_url": var.full_snapshot_url }
+}
+
+resource "google_service_account" "snapshot_engine_account" {
+  account_id   = "snapshot-engine"
+  display_name = "Snapshot engine"
+  project = module.terraform-gke-blockchain.project 
+}
+
+# based on workload identity docs
+# https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+resource "google_service_account_iam_binding" "snapshot_engine_account_binding" {
+  service_account_id = google_service_account.snapshot_engine_account.name
+  role               = "roles/iam.workloadIdentityUser"
+
+  members = [
+    "serviceAccount:${module.terraform-gke-blockchain.project}.svc.id.goog[${var.kubernetes_namespace}/${var.kubernetes_name_prefix}-snapshot-engine]"
+  ]
+}
+
+# the below to be able to run kubectl commands from within a kubectl pod (so we can create volume snapshots, and mount them, on a cron)
+resource "google_project_iam_binding" "snapshot_engine_account_k8s_permisison" {
+  role               = "roles/container.developer"
+  project = module.terraform-gke-blockchain.project 
+
+  members = [
+    "serviceAccount:snapshot-engine@${module.terraform-gke-blockchain.project}.iam.gserviceaccount.com"
+  ]
 }
 
 resource "null_resource" "push_containers" {
@@ -40,6 +71,7 @@ EOY
 }
 export -f build_container
 find ${path.module}/../docker -mindepth 1 -maxdepth 1 -type d -exec bash -c 'build_container "$0"' {} \; -printf '%f\n'
+#build_container ${path.module}/../docker/tezos-snapshot-engine
 EOF
   }
 }
@@ -72,11 +104,6 @@ mkdir -pv tezos-public-node
 cat <<EOK > tezos-public-node/kustomization.yaml
 ${templatefile("${path.module}/../k8s/tezos-public-node-tmpl/kustomization.yaml.tmpl", local.kubernetes_variables)}
 EOK
-cat <<EORPP > tezos-public-node/regionalpvpatch.yaml
-${templatefile("${path.module}/../k8s/tezos-public-node-tmpl/regionalpvpatch.yaml.tmpl",
-   { "regional_pd_zones" : join(", ", var.node_locations),
-     "kubernetes_name_prefix": var.kubernetes_name_prefix})}
-EORPP
 cat <<EOPPVN > tezos-public-node/prefixedpvnode.yaml
 ${templatefile("${path.module}/../k8s/tezos-public-node-tmpl/prefixedpvnode.yaml.tmpl", {"kubernetes_name_prefix": var.kubernetes_name_prefix})}
 EOPPVN
@@ -84,6 +111,16 @@ cat <<EONPN > tezos-public-node/nodepool.yaml
 ${templatefile("${path.module}/../k8s/tezos-public-node-tmpl/nodepool.yaml.tmpl", {"kubernetes_pool_name": var.kubernetes_pool_name})}
 EONPN
 
+mkdir -pv tezos-snapshot-engine
+cat <<EOK > tezos-snapshot-engine/kustomization.yaml
+${templatefile("${path.module}/../k8s/tezos-snapshot-engine-tmpl/kustomization.yaml.tmpl", local.kubernetes_variables)}
+EOK
+cat <<EONPN > tezos-snapshot-engine/nodepool.yaml
+${templatefile("${path.module}/../k8s/tezos-snapshot-engine-tmpl/nodepool.yaml.tmpl", {"kubernetes_pool_name": var.kubernetes_pool_name})}
+EONPN
+cat <<EONPN > tezos-snapshot-engine/crontime.yaml
+${templatefile("${path.module}/../k8s/tezos-snapshot-engine-tmpl/crontime.yaml.tmpl", {"snapshot_cron_schedule": var.snapshot_cron_schedule})}
+EONPN
 kubectl apply -k .
 cd ${abspath(path.module)}
 rm -rvf ${abspath(path.module)}/k8s-${var.kubernetes_namespace}
@@ -91,4 +128,31 @@ EOF
 
   }
   depends_on = [ null_resource.push_containers, kubernetes_namespace.tezos_snapshot_namespace ]
+}
+
+resource "random_id" "rnd_bucket" {
+  byte_length = 4
+}
+
+resource "google_storage_bucket" "snapshot_bucket" {
+  name     = "tezos-snapshot-bucket-${random_id.rnd_bucket.hex}"
+  project = module.terraform-gke-blockchain.project
+
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+  force_destroy = true
+}
+
+resource "google_storage_bucket_iam_member" "member" {
+  bucket = google_storage_bucket.snapshot_bucket.name
+  role        = "roles/storage.objectAdmin"
+  member      = "serviceAccount:${google_service_account.snapshot_engine_account.email}"
+}
+
+resource "google_storage_bucket_iam_member" "make_public" {
+  bucket = google_storage_bucket.snapshot_bucket.name
+  role        = "roles/storage.objectViewer"
+  member      = "allUsers"
 }

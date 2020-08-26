@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tezos-snapshotter
+spec:
+  ttlSecondsAfterFinished: 259200
+  template:
+    metadata:
+      labels:
+        app: tezos-snapshotter
+    spec:
+      securityContext:
+        fsGroup: 100
+      initContainers:
+      - name: tezos-snapshotter
+        image: tezos-snapshotter
+        volumeMounts:
+        - name: tezos-node-pv-snapshot-provision
+          mountPath: /var/run/tezos/node
+        - name: snapshot-cache-volume
+          mountPath: /mnt/snapshot-cache-volume
+        resources:
+          limits:
+            cpu: 0
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: tezos-snapshotter-configmap
+      - name: snapshot-uploader
+        image: snapshot-uploader
+        volumeMounts:
+        - name: snapshot-cache-volume
+          mountPath: /mnt/snapshot-cache-volume
+        resources:
+          limits:
+            cpu: 0
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: tezos-snapshotter-configmap
+      containers:
+      - name: website-builder
+        image: website-builder
+        volumeMounts:
+        - name: snapshot-cache-volume
+          mountPath: /mnt/snapshot-cache-volume
+        resources:
+          limits:
+            cpu: 0
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: tezos-snapshotter-configmap
+      volumes:
+      - name: tezos-node-pv-snapshot-provision
+        persistentVolumeClaim:
+          claimName: ${KUBERNETES_NAME_PREFIX}-tezos-node-pv-snapshot-provision
+      - name: snapshot-cache-volume
+        emptyDir: {}
+      restartPolicy: OnFailure
+      serviceAccountName: ${KUBERNETES_NAME_PREFIX}-snapshot-engine

@@ -1,0 +1,5 @@
+FROM tezos/tezos:((tezos_version))
+COPY tezos-snapshotter.sh /
+USER tezos
+ENTRYPOINT ["/tezos-snapshotter.sh"]
+CMD []

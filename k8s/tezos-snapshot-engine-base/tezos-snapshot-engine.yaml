@@ -1,0 +1,48 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: tezos-snapshot-engine
+spec:
+  # every 24 hours
+  schedule: "7 13 * * *"
+  concurrencyPolicy:  Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: tezos-snapshot-engine
+        spec:
+          securityContext:
+            fsGroup: 100
+          containers:
+          - name: tezos-snapshot-engine
+            image: tezos-snapshot-engine
+            envFrom:
+            - configMapRef:
+                name: tezos-snapshot-engine-configmap
+            volumeMounts:
+            - name: tezos-public-node-pv
+              mountPath: /var/run/tezos/node
+              readOnly: true
+            - name: snapshot-cache-volume
+              mountPath: /mnt/snapshot-cache-volume
+            resources:
+              limits:
+                cpu: 0
+            imagePullPolicy: Always
+          volumes:
+          - name: tezos-public-node-pv
+            persistentVolumeClaim:
+              claimName: tezos-public-node-claim
+          - name: snapshot-cache-volume
+            emptyDir: {}
+          restartPolicy: OnFailure
+          serviceAccountName: snapshot-engine
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: snapshot-engine
+  annotations:
+    iam.gke.io/gcp-service-account: snapshot-engine@tzshotsc5bc9fce6db38396.iam.gserviceaccount.com

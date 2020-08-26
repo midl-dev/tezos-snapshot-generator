@@ -2,8 +2,9 @@ bases:
 - ./../tezos-public-node-base
 
 imageTags:
-  - name: tezos/tezos
-    newTag: ${tezos_version}
+  - name: tezos-public-node-with-probes
+    newName: gcr.io/${project}/tezos-public-node-with-probes
+    newTag: ${kubernetes_namespace}-latest
   - name: tezos-snapshot-downloader
     newName: gcr.io/${project}/tezos-snapshot-downloader
     newTag: ${kubernetes_namespace}-latest
@@ -20,6 +21,5 @@ configMapGenerator:
   - SNAPSHOT_URL="${full_snapshot_url}"
 
 patchesStrategicMerge:
-- regionalpvpatch.yaml
-- prefixedpvnode.yaml
 - nodepool.yaml
+- prefixedpvnode.yaml

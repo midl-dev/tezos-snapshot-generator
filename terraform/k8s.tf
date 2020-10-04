@@ -33,13 +33,11 @@ resource "google_service_account_iam_binding" "snapshot_engine_account_binding" 
 }
 
 # the below to be able to run kubectl commands from within a kubectl pod (so we can create volume snapshots, and mount them, on a cron)
-resource "google_project_iam_binding" "snapshot_engine_account_k8s_permisison" {
+resource "google_project_iam_member" "snapshot_engine_account_k8s_permission" {
   role               = "roles/container.developer"
   project = module.terraform-gke-blockchain.project 
 
-  members = [
-    "serviceAccount:snapshot-engine@${module.terraform-gke-blockchain.project}.iam.gserviceaccount.com"
-  ]
+  member = "serviceAccount:${var.kubernetes_name_prefix}-snapshot-engine@${module.terraform-gke-blockchain.project}.iam.gserviceaccount.com"
 }
 
 resource "null_resource" "push_containers" {

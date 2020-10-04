@@ -65,7 +65,7 @@ spec:
       containers:
       - name: tezos-public-node
         image: tezos-public-node-with-probes
-        args: [ "tezos-node" ]
+        args: [ "tezos-node", "--network", "$(TEZOS_NETWORK)" ]
         ports:
         - containerPort: 9732
           name: tezos-port

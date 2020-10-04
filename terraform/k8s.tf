@@ -16,8 +16,8 @@ locals {
 }
 
 resource "google_service_account" "snapshot_engine_account" {
-  account_id   = "snapshot-engine"
-  display_name = "Snapshot engine"
+  account_id   = "${var.kubernetes_name_prefix}-snapshot-engine"
+  display_name = "Snapshot engine for ${var.kubernetes_name_prefix}"
   project = module.terraform-gke-blockchain.project 
 }
 

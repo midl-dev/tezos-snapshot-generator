@@ -37,9 +37,42 @@ Block timestamp: $BLOCK_TIMESTAMP
 
 [Rolling Snapshot](${snapshot_name}.rolling)
 
+### How to use
+
+Issue the following commands:
+
+```
+wget https://${TEZOS_NETWORK}.xtz-shots.io/${snapshot_name}.rolling
+tezos-node snapshot import ${snapshot_name}.rolling --block ${BLOCK_HASH}
+```
+
+Or simply use the permalink:
+```
+wget https://${TEZOS_NETWORK}.xtz-shots.io/rolling -O tezos-mainnet.rolling
+tezos-node snapshot import tezos-mainnet.rolling
+```
+
 ## Full snapshot
 
 [Full Snapshot](${snapshot_name}.full)
+
+### How to use
+
+Issue the following commands:
+
+```
+wget https://${TEZOS_NETWORK}.xtz-shots.io/${snapshot_name}.full
+tezos-node snapshot import ${snapshot_name}.full --block ${BLOCK_HASH}
+```
+
+Or simply use the permalink:
+```
+wget https://${TEZOS_NETWORK}.xtz-shots.io/full -O tezos-mainnet.full
+tezos-node snapshot import tezos-mainnet.full
+```
+
+
+More details in [Tezos documentation](https://tezos.gitlab.io/user/snapshots.html).
 
 
 EOF

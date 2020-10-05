@@ -97,18 +97,6 @@ variable "tezos_version" {
   default = "latest-release"
 }
 
-variable "protocol" {
-  type = string
-  description = "The Tezos protocol currently in use, for example 006-PsCARTHA."
-  default = "006-PsCARTHA"
-}
-
-variable "protocol_short" {
-  type = string
-  description = "The short string describing the protocol, for example PsCARTHA."
-  default = "PsCARTHA"
-}
-
 variable "full_snapshot_url" {
   type = string
   description = "url of the snapshot of type full to download"

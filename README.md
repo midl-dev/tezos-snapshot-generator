@@ -46,8 +46,6 @@ All custom values unique to your deployment are set as terraform variables. You 
 
 A simple way is to populate a file called `terraform.tfvars`.
 
-NOTE: `terraform.tfvars` is not recommended for a production deployment. See [production hardening](docs/production-hardening.md).
-
 First, go to `terraform` folder:
 
 ```
@@ -56,13 +54,73 @@ cd terraform
 
 Below is a list of variables you must set.
 
-### Google Cloud project
+#### Google Cloud project
 
 A default Google Cloud project should have been created when you activated your account. Verify its ID with `gcloud projects list`. You may also create a dedicated project to deploy the cluster.
 
 Set the project id in the `project` terraform variable.
 
-### Tezos network
+#### Tezos network (optional)
 
 Set the `tezos_network` variable to the network to use (`mainnet`, `carthagenet`, etc)
 
+#### Tezos version (optional)
+
+Set the `tezos_version` variable to the desired branch of the Tezos software release.
+
+#### Full snapshot url (optional)
+
+Yes, the snapshot engine also can take a snapshot to sync faster. Pass the snapshot URL as `full_snapshot_url` parameter.
+
+#### Firebase args
+
+Note: I tried to make the firebase project and the token automatically with terraform, but there was a bug. See `terraform/firebase.tf`
+
+For now, the terraform project must be created separately, and a CI token must be created with the `firebase login:ci` command.
+
+Then pass the project id as `firebase_project` and the token as `firebase_token`.
+
+#### Snapshot cron schedule (optional)
+
+Fill the `snapshot_cron_schedule` variable if you want to alter how often or when the snapshot generation cronjob runs.
+
+### Deploy
+
+1. Run the following:
+
+```
+terraform init
+terraform plan -out plan.out
+terraform apply plan.out
+```
+
+This will take time as it will:
+* create a Google Cloud project
+* create a Kubernetes cluster
+* build the necessary containers
+* push the kubernetes configuration, which will spin up a node a start synchronization
+
+In case of error, run the `plan` and `apply` steps again:
+
+```
+terraform plan -out plan.out
+terraform apply plan.out
+```
+
+### Connect to the cluster
+
+Once the command returns, you can verify that the pods are up by running:
+
+```
+kubectl get pods
+```
+
+## Wrapping up
+
+To delete everything and terminate all the charges, issue the command:
+
+```
+terraform destroy
+```
+
+Alternatively, go to the GCP console and delete the project.

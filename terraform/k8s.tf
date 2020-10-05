@@ -2,8 +2,6 @@ locals {
   kubernetes_variables = { "project" : module.terraform-gke-blockchain.project,
        "tezos_version": var.tezos_version,
        "tezos_network": var.tezos_network,
-       "protocol": var.protocol,
-       "protocol_short": var.protocol_short,
        "kubernetes_namespace": var.kubernetes_namespace,
        "kubernetes_name_prefix": var.kubernetes_name_prefix,
        "firebase_project": var.firebase_project,

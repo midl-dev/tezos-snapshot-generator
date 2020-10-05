@@ -44,5 +44,3 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: snapshot-engine
-  annotations:
-    iam.gke.io/gcp-service-account: snapshot-engine@tzshotsc5bc9fce6db38396.iam.gserviceaccount.com

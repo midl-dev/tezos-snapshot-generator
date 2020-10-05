@@ -6,7 +6,7 @@ module "terraform-gke-blockchain" {
   project = var.project
   project_prefix = "tzshots"
   # need k8s 1.17 to take snapshots of volumes
-  release_channel = "RAPID"
+  release_channel = "REGULAR"
   region = var.region
   node_locations = var.node_locations
   node_pools = { "blockchain-pool" : { "node_count": 1, "instance_type": "e2-standard-4" }}

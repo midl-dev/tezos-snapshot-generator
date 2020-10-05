@@ -116,6 +116,9 @@ EOK
 cat <<EONPN > tezos-snapshot-engine/nodepool.yaml
 ${templatefile("${path.module}/../k8s/tezos-snapshot-engine-tmpl/nodepool.yaml.tmpl", {"kubernetes_pool_name": var.kubernetes_pool_name})}
 EONPN
+cat <<EONPN > tezos-snapshot-engine/serviceaccountannotate.yaml
+${templatefile("${path.module}/../k8s/tezos-snapshot-engine-tmpl/serviceaccountannotate.yaml.tmpl", local.kubernetes_variables)}
+EONPN
 cat <<EONPN > tezos-snapshot-engine/crontime.yaml
 ${templatefile("${path.module}/../k8s/tezos-snapshot-engine-tmpl/crontime.yaml.tmpl", {"snapshot_cron_schedule": var.snapshot_cron_schedule})}
 EONPN

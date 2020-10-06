@@ -26,7 +26,7 @@ mkdir -p /mnt/snapshot-cache-volume/firebase-files/
 cat << EOF > /mnt/snapshot-cache-volume/firebase-files/index.md
 ---
 # Page settings
-layout: default
+layout: snapshot
 keywords:
 comments: false
 
@@ -39,7 +39,7 @@ author:
     title: MIDL.dev
     title_url: 'https://midl.dev/'
     external_url: true
-    description: MIDL.dev is a staking-as-a-service company
+    description: A staking-as-a-service company - we help you bake your XTZ. 
 
 # Micro navigation
 micro_nav: true

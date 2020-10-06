@@ -22,7 +22,30 @@ snapshot_name="tezos-${TEZOS_NETWORK}-${BLOCK_HEIGHT}"
 mkdir -p /mnt/snapshot-cache-volume/firebase-files/
 cat << EOF > /mnt/snapshot-cache-volume/firebase-files/index.md
 ---
+# Page settings
 layout: default
+keywords:
+comments: false
+
+# Hero section
+title: Mainnet snapshots
+description: 
+
+# Author box
+author:
+    title: MIDL.dev
+    title_url: 'https://midl.dev/'
+    external_url: true
+    description: MIDL.dev is a staking-as-a-service company
+
+# Micro navigation
+micro_nav: true
+
+# Page navigation
+page_nav:
+    home:
+        content: Previous page
+        url: 'https://xtz-shots.io/index.html'
 ---
 
 ## Tezos snapshot for ${TEZOS_NETWORK}

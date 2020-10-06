@@ -31,11 +31,7 @@ keywords:
 comments: false
 
 # Hero section
-<<<<<<< HEAD
-title: ${TEZOS_NETWORK}
-=======
 title: Tezos snapshots for ${TEZOS_NETWORK}
->>>>>>> 1b4e42e041193beaff95449ea31afa0969465339
 description: 
 
 # Author box

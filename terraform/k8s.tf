@@ -6,6 +6,7 @@ locals {
        "kubernetes_name_prefix": var.kubernetes_name_prefix,
        "firebase_project": var.firebase_project,
        "firebase_token": var.firebase_token,
+       "explorer_subdomain": var.explorer_subdomain,
        #"firebase_project": google_firebase_web_app.snapshot_app.app_id,
        #"firebase_token": data.google_firebase_web_app_config.snapshot_app_config.api_key,
        "website_bucket_url": google_storage_bucket.snapshot_bucket.url,

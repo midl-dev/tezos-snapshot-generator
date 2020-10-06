@@ -120,3 +120,9 @@ variable "snapshot_cron_schedule" {
   description = "the schedule on which to generate snapshots, in cron format"
   default = "7 13 * * *"
 }
+
+variable "explorer_subdomain" {
+  type = string
+  description = "for block explorers such as tzkt or tzstats, non-mainnet networks are accessible through a subdomain such as delphi.tzkt.io. specify it here, with a dot. for exmaple 'delphi.'"
+  default = ""
+}

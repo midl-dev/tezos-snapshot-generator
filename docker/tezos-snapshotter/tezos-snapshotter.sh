@@ -19,6 +19,9 @@ snapshot_name="tezos-${TEZOS_NETWORK}-${BLOCK_HEIGHT}"
     --block ${BLOCK_HASH} \
     /mnt/snapshot-cache-volume/${snapshot_name}.full
 
+rolling_snapshot_size=$(du -h /mnt/snapshot-cache-volume/${snapshot_name}.rolling | cut -f1)
+full_snapshot_size=$(du -h /mnt/snapshot-cache-volume/${snapshot_name}.full | cut -f1)
+
 mkdir -p /mnt/snapshot-cache-volume/firebase-files/
 cat << EOF > /mnt/snapshot-cache-volume/firebase-files/index.md
 ---
@@ -28,7 +31,7 @@ keywords:
 comments: false
 
 # Hero section
-title: Mainnet snapshots
+title: Tezos snapshots for ${TEZOS_NETWORK}
 description: 
 
 # Author box
@@ -48,56 +51,70 @@ page_nav:
         url: 'https://xtz-shots.io/index.html'
 ---
 
-## Tezos snapshot for ${TEZOS_NETWORK}
-
 Block height: $BLOCK_HEIGHT
 
-Block hash: \`${BLOCK_HASH}\` - [Verify on TzStats](https://tzstats.com/${BLOCK_HASH}) - [Verify on TzKT](https://tzkt.io/${BLOCK_HASH})
+Block hash: \`${BLOCK_HASH}\`
+
+[Verify on TzStats](https://${EXPLORER_SUBDOMAIN}tzstats.com/${BLOCK_HASH}){:target="_blank"} - [Verify on TzKT](https://${EXPLORER_SUBDOMAIN}tzkt.io/${BLOCK_HASH}){:target="_blank"}
 
 Block timestamp: $BLOCK_TIMESTAMP
 
 ## Rolling snapshot
 
-[Rolling Snapshot](${snapshot_name}.rolling)
+[Download Rolling Snapshot](${snapshot_name}.rolling)
 
-### How to use
-
-Issue the following commands:
-
-```
-wget https://${TEZOS_NETWORK}.xtz-shots.io/${snapshot_name}.rolling
-tezos-node snapshot import ${snapshot_name}.rolling --block ${BLOCK_HASH}
-```
-
-Or simply use the permalink:
-```
-wget https://${TEZOS_NETWORK}.xtz-shots.io/rolling -O tezos-mainnet.rolling
-tezos-node snapshot import tezos-mainnet.rolling
-```
+Size: ${rolling_snapshot_size}
 
 ## Full snapshot
 
-[Full Snapshot](${snapshot_name}.full)
+[Download Full Snapshot](${snapshot_name}.full)
 
-### How to use
+Size: ${full_snapshot_size}
+
+## How to use
+
+### Rolling
 
 Issue the following commands:
 
-```
-wget https://${TEZOS_NETWORK}.xtz-shots.io/${snapshot_name}.full
-tezos-node snapshot import ${snapshot_name}.full --block ${BLOCK_HASH}
-```
+\`\`\`
+wget https://${TEZOS_NETWORK}.xtz-shots.io/${snapshot_name}.rolling
+tezos-node snapshot import ${snapshot_name}.rolling --block ${BLOCK_HASH}
+\`\`\`
 
 Or simply use the permalink:
-```
-wget https://${TEZOS_NETWORK}.xtz-shots.io/full -O tezos-mainnet.full
-tezos-node snapshot import tezos-mainnet.full
-```
+\`\`\`
+wget https://${TEZOS_NETWORK}.xtz-shots.io/rolling -O tezos-${TEZOS_NETWORK}.rolling
+tezos-node snapshot import tezos-${TEZOS_NETWORK}.rolling
+\`\`\`
+
+### Full
+
+Issue the following commands:
+
+\`\`\`
+wget https://${TEZOS_NETWORK}.xtz-shots.io/${snapshot_name}.full
+tezos-node snapshot import ${snapshot_name}.full --block ${BLOCK_HASH}
+\`\`\`
+
+Or simply use the permalink:
+\`\`\`
+wget https://${TEZOS_NETWORK}.xtz-shots.io/full -O tezos-${TEZOS_NETWORK}.full
+tezos-node snapshot import tezos-${TEZOS_NETWORK}.full
+\`\`\`
 
 
-More details in [Tezos documentation](https://tezos.gitlab.io/user/snapshots.html).
+### More details
+
+[About xtz-shots.io](https://xtz-shots.io/getting-started/).
+
+[Tezos documentation](https://tezos.gitlab.io/user/snapshots.html){:target="_blank"}.
 
 
 EOF
+
+echo "**** DEBUG OUTPUT OF index.md *****"
+cat /mnt/snapshot-cache-volume/firebase-files/index.md
+echo "**** end debug ****"
 
 chmod -R 777 /mnt/snapshot-cache-volume/firebase-files

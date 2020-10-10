@@ -19,7 +19,7 @@ firebase_conf = json.loads(""" {
 
 firebase_conf["hosting"]["redirects"] = [ { "source": ":block.rolling", "type": 301, "destination": "https://storage.googleapis.com/%s/:block.rolling" % os.environ['WEBSITE_BUCKET_URL'].replace("gs://", "") },
         { "source": ":block.full", "type": 301, "destination": "https://storage.googleapis.com/%s/:block.full" % os.environ['WEBSITE_BUCKET_URL'].replace("gs://", "") },
-        { "source": "tezos-%s.rolling" % os.environ['TEZOS_NETWORK'], "type": 301, "destination": "https://storage.googleapis.com/%s/tezos-%s-%s.rolling" % (os.environ['WEBSITE_BUCKET_URL'].replace("gs://", ""), os.environ['TEZOS_NETWORK'], os.environ['BLOCK_HEIGHT']) },
-        { "source": "tezos-%s.full" % os.environ['TEZOS_NETWORK'], "type": 301, "destination": "https://storage.googleapis.com/%s/tezos-%s-%s.full" % (os.environ['WEBSITE_BUCKET_URL'].replace("gs://",""), os.environ['TEZOS_NETWORK'], os.environ['BLOCK_HEIGHT']) } ]
+        { "source": "rolling", "type": 301, "destination": "https://storage.googleapis.com/%s/tezos-%s-%s.rolling" % (os.environ['WEBSITE_BUCKET_URL'].replace("gs://", ""), os.environ['TEZOS_NETWORK'], os.environ['BLOCK_HEIGHT']) },
+        { "source": "full", "type": 301, "destination": "https://storage.googleapis.com/%s/tezos-%s-%s.full" % (os.environ['WEBSITE_BUCKET_URL'].replace("gs://",""), os.environ['TEZOS_NETWORK'], os.environ['BLOCK_HEIGHT']) } ]
 
 print(json.dumps(firebase_conf, indent=4))

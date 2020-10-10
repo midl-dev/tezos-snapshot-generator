@@ -36,10 +36,10 @@ description:
 
 # Author box
 author:
-    title: MIDL.dev
-    title_url: 'https://midl.dev/'
+    title: Brought to you by MIDL.dev
+    title_url: 'https://midl.dev/tezos-suite'
     external_url: true
-    description: A staking-as-a-service company - we help you bake your XTZ. 
+    description: A proof-of-stake infrastructure company - we help you bake your XTZ. <a href="https://MIDL.dev/tezos-suite" target="_blank">Learn more</a>.
 
 # Micro navigation
 micro_nav: true
@@ -50,6 +50,8 @@ page_nav:
         content: Previous page
         url: 'https://xtz-shots.io/index.html'
 ---
+
+# Tezos snapshots for ${TEZOS_NETWORK}
 
 Block height: $BLOCK_HEIGHT
 

@@ -70,7 +70,7 @@ EOY
 }
 export -f build_container
 find ${path.module}/../docker -mindepth 1 -maxdepth 1 -type d -exec bash -c 'build_container "$0"' {} \; -printf '%f\n'
-#build_container ${path.module}/../docker/tezos-snapshot-engine
+#build_container ${path.module}/../docker/tezos-snapshot-downloader
 EOF
   }
 }
@@ -137,7 +137,7 @@ resource "random_id" "rnd_bucket" {
 }
 
 resource "google_storage_bucket" "snapshot_bucket" {
-  name     = "tezos-snapshot-bucket-${random_id.rnd_bucket.hex}"
+  name     = "tezos-snapshot-bucket-${var.kubernetes_name_prefix}-${random_id.rnd_bucket.hex}"
   project = module.terraform-gke-blockchain.project
 
   website {

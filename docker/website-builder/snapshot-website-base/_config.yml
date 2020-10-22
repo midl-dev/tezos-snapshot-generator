@@ -21,7 +21,7 @@ doks:
               item_url: 'https://mainnet.xtz-shots.io/'
             - item_name: Delphinet
               item_url: 'https://delphinet.xtz-shots.io/'
-            - item_name: Delphanet
+            - item_name: Dalphanet
               item_url: 'https://dalphanet.xtz-shots.io/'
 
     footer:

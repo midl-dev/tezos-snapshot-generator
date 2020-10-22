@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -x
+
 # workload identity allows this to work
 gcloud container clusters get-credentials blockchain --region us-central1
 
@@ -15,6 +18,12 @@ then
     kubectl delete volumesnapshot ${KUBERNETES_NAME_PREFIX}-tezos-node-pv-snapshot -n ${KUBERNETES_NAMESPACE}
 fi
 
+# delete old tezosSnapshotter jobs - in this case, we want them preserved after one job because they contain logs that may be of interest.
+# But GKE does not support ttl for simple jobs (not cronjobs) so we delete old ones here.
+jobs_to_delete=$(kubectl get jobs -n ${KUBERNETES_NAMESPACE} --selector=app=tezos-snapshotter -o=jsonpath='{.items[?(@.status.succeeded==1)].metadata.name}')
+if [ "$(echo $jobs_to_delete | wc -w)" != "0" ]; then
+    kubectl delete job $jobs_to_delete -n ${KUBERNETES_NAMESPACE}
+fi
 
 # fetch the most recent block hash. This will be the snapshot.
 export BLOCK_HASH=$(curl http://${KUBERNETES_NAME_PREFIX}-tezos-public-node:8732/monitor/bootstrapped | jq -r '.block')

@@ -39,7 +39,7 @@ author:
     title: Brought to you by MIDL.dev
     title_url: 'https://midl.dev/tezos-suite'
     external_url: true
-    description: A proof-of-stake infrastructure company. We help you bake your XTZ. <a href="https://MIDL.dev/tezos-suite" target="_blank">Learn more</a>.
+    description: A proof-of-stake infrastructure company. We help you bake your tez. <a href="https://MIDL.dev/tezos-suite" target="_blank">Learn more</a>.
 
 # Micro navigation
 micro_nav: true

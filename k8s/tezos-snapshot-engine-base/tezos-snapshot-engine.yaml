@@ -22,9 +22,6 @@ spec:
             - configMapRef:
                 name: tezos-snapshot-engine-configmap
             volumeMounts:
-            - name: tezos-public-node-pv
-              mountPath: /var/run/tezos/node
-              readOnly: true
             - name: snapshot-cache-volume
               mountPath: /mnt/snapshot-cache-volume
             resources:

@@ -21,6 +21,7 @@ snapshot_name="tezos-${TEZOS_NETWORK}-${BLOCK_HEIGHT}"
 
 rolling_snapshot_size=$(du -h /mnt/snapshot-cache-volume/${snapshot_name}.rolling | cut -f1)
 full_snapshot_size=$(du -h /mnt/snapshot-cache-volume/${snapshot_name}.full | cut -f1)
+tezos_version=$(/usr/local/bin/tezos-node --version || true)
 
 mkdir -p /mnt/snapshot-cache-volume/firebase-files/
 cat << EOF > /mnt/snapshot-cache-volume/firebase-files/index.md
@@ -60,6 +61,8 @@ Block hash: \`${BLOCK_HASH}\`
 [Verify on TzStats](https://${EXPLORER_SUBDOMAIN}tzstats.com/${BLOCK_HASH}){:target="_blank"} - [Verify on TzKT](https://${EXPLORER_SUBDOMAIN}tzkt.io/${BLOCK_HASH}){:target="_blank"}
 
 Block timestamp: $BLOCK_TIMESTAMP
+
+Tezos version used for snapshotting: \`${tezos_version}\`
 
 ## Rolling snapshot
 

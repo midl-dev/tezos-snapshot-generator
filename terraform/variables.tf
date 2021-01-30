@@ -4,20 +4,20 @@ terraform {
 
 variable "org_id" {
   type        = string
-  description = "Organization ID."
+  description = "Google Cloud Organization ID."
   default = ""
 }
 
 variable "billing_account" {
   type        = string
-  description = "Billing account ID."
+  description = "Google Cloud Billing account ID."
   default = ""
 }
 
 variable "project" {
   type        = string
   default     = ""
-  description = "Project ID where Terraform is authenticated to run to create additional projects. If provided, Terraform will great the GKE and Tezos cluster inside this project. If not given, Terraform will generate a new project."
+  description = "Google Cloud Project ID. A default Google Cloud project should have been created when you activated your account. Verify its ID with `gcloud projects list`. If not given, Terraform will generate a new project."
 }
 
 variable "region" {
@@ -65,7 +65,7 @@ variable "cluster_name" {
 
 variable "kubernetes_access_token" {
   type = string
-  description = "name of the kubernetes endpoint"
+  description = "Kubernetes access token for accessing pre-existing cluster"
   default = ""
 }
 
@@ -93,13 +93,13 @@ variable "tezos_network" {
 
 variable "tezos_version" {
   type =string
-  description = "The tezos container software version"
+  description = "The desired tezos software branch. It will pull a container with this tag"
   default = "latest-release"
 }
 
 variable "full_snapshot_url" {
   type = string
-  description = "url of the snapshot of type full to download"
+  description = "The snapshot engine can also sync faster with a snapshot. Pass here the url of the snapshot of type full to download"
   default = ""
 }
 
@@ -111,7 +111,7 @@ variable "firebase_project" {
 
 variable "firebase_token" {
   type = string
-  description = "firebase token (secret) to publish to the xtz-shots website"
+  description = "firebase token (secret) to publish to the xtz-shots website. Create with `firebase login:ci`"
   default = ""
 }
 

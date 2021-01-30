@@ -8,7 +8,7 @@ These snapshots are available at [XTZ-shots](https://xtz-shots.io), but you may 
 
 ## Features
 
-* runs a Kubernetes full node with "full" storage mode
+* runs a Kubernetes full node with [history mode](https://tezos.gitlab.io/user/history_modes.html) "full"
 * leverages the Kubernetes Persistent Volume Snapshot feature: takes a snapshot of the storage at filesystem level before generating the Tezos snapshot
 * runs the snapshot generation job on a configurable cron schedule, for both "full" and "rolling" modes
 * generates markdown metadata and a Jekyll static webpage describing the snapshots
@@ -52,7 +52,7 @@ First, go to `terraform` folder:
 cd terraform
 ```
 
-Below is a list of variables you must set.
+Create a file calle `terraform.tfvars` and populate variables there with the `key=value` syntax. Below is a complete example.
 
 <!-- generate with  ~/go/bin/terraform-docs markdown table . -->
 
@@ -79,14 +79,17 @@ Below is a list of variables you must set.
 | tezos\_network | The tezos network i.e. mainnet, carthagenet... | `string` | `"mainnet"` | no |
 | tezos\_version | The desired tezos software branch. It will pull a container with this tag | `string` | `"latest-release"` | no |
 
-
-#### Note Firebase
+#### Note on Firebase
 
 Note: I tried to make the firebase project and the token automatically with terraform, but there was a bug. See `terraform/firebase.tf`
 
 For now, the terraform project must be created separately, and a CI token must be created with the `firebase login:ci` command.
 
 Then pass the project id as `firebase_project` and the token as `firebase_token`.
+
+#### Full example
+
+
 
 ### Deploy
 

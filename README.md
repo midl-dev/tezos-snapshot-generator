@@ -52,7 +52,7 @@ First, go to `terraform` folder:
 cd terraform
 ```
 
-Create a file calle `terraform.tfvars` and populate variables there with the `key=value` syntax. Below is a complete example.
+Create a file calle `terraform.tfvars` and populate variables there with the `key=value` syntax. See below for a complete example.
 
 <!-- generate with  ~/go/bin/terraform-docs markdown table . -->
 
@@ -87,9 +87,18 @@ For now, the terraform project must be created separately, and a CI token must b
 
 Then pass the project id as `firebase_project` and the token as `firebase_token`.
 
-#### Full example
+#### Full example of terraform.tfvars
 
-
+```
+tezos_network="mainnet"
+tezos_version="v8.1"
+kubernetes_namespace="mns"
+kubernetes_name_prefix="mns"
+snapshot_cron_schedule = "55 1,13 * * *"
+firebase_project = "xtz-shots"
+firebase_token = "1//06s........."
+full_snapshot_url = "https://mainnet.xtz-shots.io/full"
+```
 
 ### Deploy
 

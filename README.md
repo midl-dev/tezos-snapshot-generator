@@ -27,6 +27,8 @@ These snapshots are available at [XTZ-shots](https://xtz-shots.io), but you may 
    CLI](https://kubernetes.io/docs/tasks/tools/install-kubectl/) (aka
    `kubectl`)
 
+1. Install the [firebase CLI](https://firebase.google.com/docs/cli)
+
 
 ### Authentication
 
@@ -81,11 +83,11 @@ Create a file calle `terraform.tfvars` and populate variables there with the `ke
 
 #### Note on Firebase
 
-Note: I tried to make the firebase project and the token automatically with terraform, but there was a bug. See `terraform/firebase.tf`
+Note: you must create the Firebase project manually due to a bug with firebase. See `terraform/firebase.tf`.
 
-For now, the terraform project must be created separately, and a CI token must be created with the `firebase login:ci` command.
-
-Then pass the project id as `firebase_project` and the token as `firebase_token`.
+* go to the Firebase web interface and create a Firebase project
+* using the firebase CLI, create a token with the `firebase login:ci` command.
+* pass the project id as `firebase_project` and the token as `firebase_token` terraform variables
 
 #### Full example of terraform.tfvars
 

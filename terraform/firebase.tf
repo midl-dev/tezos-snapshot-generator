@@ -5,6 +5,9 @@
 
 # But we are using a service account, so the error message does not make sense. For now, the firebase projects have to be created manually.
 
+# See this issue comment for details:
+# https://github.com/hashicorp/terraform-provider-google/issues/2973#issuecomment-537609441
+
 #resource "google_firebase_project" "default" {
 #    provider = google-beta
 #    project = module.terraform-gke-blockchain.project 

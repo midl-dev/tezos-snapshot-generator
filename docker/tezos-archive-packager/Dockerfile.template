@@ -1,0 +1,5 @@
+FROM tezos/tezos:((tezos_version))
+COPY entrypoint.sh /
+USER tezos
+ENTRYPOINT ["/entrypoint.sh"]
+CMD []

@@ -12,6 +12,7 @@ locals {
        "website_bucket_url": google_storage_bucket.snapshot_bucket.url,
        "kubernetes_pool_name": var.kubernetes_pool_name,
        "history_mode": var.archive_dumps == "true" ? "archive": "full",
+       "snapshooter_image": var.archive_dumps == "true" ? "tezos-archive-packager": "tezos-snapshotter",
        "full_snapshot_url": var.full_snapshot_url }
 }
 

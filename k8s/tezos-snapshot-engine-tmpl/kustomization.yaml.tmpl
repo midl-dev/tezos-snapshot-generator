@@ -18,6 +18,7 @@ configMapGenerator:
   - KUBERNETES_NAMESPACE="${kubernetes_namespace}"
   - KUBERNETES_POOL_NAME="${kubernetes_pool_name}"
   - PROJECT="${project}"
+  - SNAPSHOTTER_IMAGE="${snapshotter_image}"
 
 patchesStrategicMerge:
 - nodepool.yaml

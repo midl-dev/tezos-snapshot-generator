@@ -11,7 +11,7 @@ node_data_dir="$node_dir/data"
 node="$bin_dir/tezos-node"
 
 rm -rvf ${node_data_dir}/config.json
-${node} config init --data-dir ${node_data_dir} --network ${TEZOS_NETWORK}
+${node} config init --data-dir ${node_data_dir} --network ${TEZOS_NETWORK} --history-mode ${HISTORY_MODE}
 
 if [ -d ${node_dir}/data/context ]; then
     echo "Blockchain has already been imported, exiting"

@@ -101,6 +101,11 @@ spec:
             configMapKeyRef:
               name: tezos-configmap
               key: SNAPSHOT_URL
+        - name: HISTORY_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: tezos-configmap
+              key: HISTORY_MODE
         - name: TEZOS_NETWORK
           valueFrom:
             configMapKeyRef:

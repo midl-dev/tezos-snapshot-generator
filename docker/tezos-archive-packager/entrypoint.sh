@@ -43,7 +43,7 @@ page_nav:
         url: 'https://xtz-shots.io/index.html'
 ---
 
-# Tezos snapshots for ${TEZOS_NETWORK}
+# Tezos archive backup for ${TEZOS_NETWORK}
 
 Block height: $BLOCK_HEIGHT
 
@@ -53,19 +53,21 @@ Block hash: \`${BLOCK_HASH}\`
 
 Block timestamp: $BLOCK_TIMESTAMP
 
+Archive size: ${snapshot_size}
+
 [Download Archive](${snapshot_name})
 
 ## How to use
 
 \`\`\`
-wget https://${FIREBASE_SUBDOMAIN}.xtz-shots.io/${snapshot_name}
+wget https://${TEZOS_NETWORK}-archive.xtz-shots.io/${snapshot_name}
 7z x ${snapshot_name} -o~/.tezos-node/data
 rm -v ${snapshot_name}
 \`\`\`
 
 Or simply use the permalink:
 \`\`\`
-wget https://${FIREBASE_SUBDOMAIN}.xtz-shots.io/archive -O tezos-${TEZOS_NETWORK}-archive.7z
+wget https://${TEZOS_NETWORK}-archive.xtz-shots.io/archive -O tezos-${TEZOS_NETWORK}-archive.7z
 7z x ${TEZOS_NETWORK}-archive.7z -o~/.tezos-node/data
 rm -v ${TEZOS_NETWORK}-archive.7z
 \`\`\`

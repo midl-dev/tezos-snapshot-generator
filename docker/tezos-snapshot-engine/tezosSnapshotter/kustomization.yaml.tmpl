@@ -8,6 +8,9 @@ namePrefix: ${KUBERNETES_NAME_PREFIX}-
 nameSuffix: "-${BLOCK_HEIGHT}"
 
 imageTags:
+  - name: tezos-archive-packager
+    newName: gcr.io/${PROJECT}/tezos-archive-packager
+    newTag: ${KUBERNETES_NAMESPACE}-latest
   - name: tezos-snapshotter
     newName: gcr.io/${PROJECT}/tezos-snapshotter
     newTag: ${KUBERNETES_NAMESPACE}-latest

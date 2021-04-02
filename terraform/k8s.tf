@@ -72,6 +72,7 @@ EOY
 }
 export -f build_container
 find ${path.module}/../docker -mindepth 1 -maxdepth 1 -type d -exec bash -c 'build_container "$0"' {} \; -printf '%f\n'
+#build_container ${path.module}/../docker/snapshot-uploader
 EOF
   }
 }
@@ -144,6 +145,14 @@ resource "google_storage_bucket" "snapshot_bucket" {
   website {
     main_page_suffix = "index.html"
     not_found_page   = "404.html"
+  }
+  lifecycle_rule {
+    condition {
+      age = var.num_days_to_keep
+    }
+    action {
+      type = "Delete"
+    }
   }
   force_destroy = true
 }

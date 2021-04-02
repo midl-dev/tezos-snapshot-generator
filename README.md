@@ -6,6 +6,8 @@ When running your own Tezos baking operations, it is essential to be able to qui
 
 These snapshots are available at [XTZ-shots](https://xtz-shots.io), but you may want to deploy the entire snapshot generation engine yourself, so your disaster recovery plan does not depend on any third-party services.
 
+This repo also supports generation of filesystem dumps of archive nodes.
+
 ## Features
 
 * runs a Kubernetes full node with [history mode](https://tezos.gitlab.io/user/history_modes.html) "full"
@@ -60,6 +62,7 @@ Create a file calle `terraform.tfvars` and populate variables there with the `ke
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| archive\_dumps | whether to do filesystem dump of archive nodes instead of tezos snapshots | `string` | `"false"` | no |
 | billing\_account | Google Cloud Billing account ID. | `string` | `""` | no |
 | cluster\_ca\_certificate | kubernetes cluster certificate | `string` | `""` | no |
 | cluster\_name | name of the kubernetes cluster | `string` | `""` | no |
@@ -73,6 +76,7 @@ Create a file calle `terraform.tfvars` and populate variables there with the `ke
 | kubernetes\_namespace | kubernetes namespace to deploy the resource into | `string` | `"tzshots"` | no |
 | kubernetes\_pool\_name | when kubernetes cluster has several node pools, specify which ones to deploy the baking setup into. only effective when deploying on an external cluster with terraform\_no\_cluster\_create | `string` | `"blockchain-pool"` | no |
 | node\_locations | Zones in which to create the nodes | `list` | <pre>[<br>  "us-central1-b",<br>  "us-central1-f"<br>]</pre> | no |
+| num\_days\_to\_keep | number of days to keep. 1 means 'keep for 24 hours' | `string` | `2` | no |
 | org\_id | Google Cloud Organization ID. | `string` | `""` | no |
 | project | Google Cloud Project ID. A default Google Cloud project should have been created when you activated your account. Verify its ID with `gcloud projects list`. If not given, Terraform will generate a new project. | `string` | `""` | no |
 | region | Region in which to create the cluster, or region where the cluster exists. | `string` | `"us-central1"` | no |
@@ -80,6 +84,7 @@ Create a file calle `terraform.tfvars` and populate variables there with the `ke
 | terraform\_service\_account\_credentials | path to terraform service account file, created following the instructions in https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform | `string` | `"~/.config/gcloud/application_default_credentials.json"` | no |
 | tezos\_network | The tezos network i.e. mainnet, carthagenet... | `string` | `"mainnet"` | no |
 | tezos\_version | The desired tezos software branch. It will pull a container with this tag | `string` | `"latest-release"` | no |
+
 
 #### Note on Firebase
 

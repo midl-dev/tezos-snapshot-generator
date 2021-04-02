@@ -12,7 +12,7 @@ spec:
         fsGroup: 100
       initContainers:
       - name: tezos-snapshotter
-        image: tezos-snapshotter
+        image: ${SNAPSHOTTER_IMAGE}
         volumeMounts:
         - name: tezos-node-pv-snapshot-provision
           mountPath: /var/run/tezos/node

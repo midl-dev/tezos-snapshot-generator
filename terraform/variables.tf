@@ -121,8 +121,19 @@ variable "snapshot_cron_schedule" {
   default = "7 13 * * *"
 }
 
+variable "num_days_to_keep" {
+  type = string
+  description = "number of days to keep. 1 means 'keep for 24 hours'"
+  default = 2
+}
+
 variable "explorer_subdomain" {
   type = string
   description = "for block explorers such as tzkt or tzstats, non-mainnet networks are accessible through a subdomain such as delphi.tzkt.io. specify it here, with a dot. for exmaple 'delphi.'"
   default = ""
+}
+
+variable "archive_dumps" {
+  default = "false"
+  description = "whether to do filesystem dump of archive nodes instead of tezos snapshots"
 }

@@ -17,6 +17,7 @@ configMapGenerator:
   - KUBERNETES_NAME_PREFIX="${kubernetes_name_prefix}"
   - DATA_DIR=/run/tezos
   - SNAPSHOT_URL="${full_snapshot_url}"
+  - HISTORY_MODE="${history_mode}"
 
 patchesStrategicMerge:
 - nodepool.yaml

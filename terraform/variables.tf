@@ -137,3 +137,9 @@ variable "archive_dumps" {
   default = "false"
   description = "whether to do filesystem dump of archive nodes instead of tezos snapshots"
 }
+
+variable "node_storage_size" {
+  type = string
+  description = "Storage size for the node, in gibibytes (GiB)."
+  default = "35"
+}

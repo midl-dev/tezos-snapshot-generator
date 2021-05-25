@@ -11,6 +11,7 @@ locals {
        #"firebase_token": data.google_firebase_web_app_config.snapshot_app_config.api_key,
        "website_bucket_url": google_storage_bucket.snapshot_bucket.url,
        "kubernetes_pool_name": var.kubernetes_pool_name,
+       "node_storage_size": var.node_storage_size,
        "history_mode": var.archive_dumps == "true" ? "archive": "full",
        "snapshotter_image": var.archive_dumps == "true" ? "tezos-archive-packager": "tezos-snapshotter",
        "full_snapshot_url": var.full_snapshot_url }
@@ -106,7 +107,7 @@ cat <<EOK > tezos-public-node/kustomization.yaml
 ${templatefile("${path.module}/../k8s/tezos-public-node-tmpl/kustomization.yaml.tmpl", local.kubernetes_variables)}
 EOK
 cat <<EOPPVN > tezos-public-node/prefixedpvnode.yaml
-${templatefile("${path.module}/../k8s/tezos-public-node-tmpl/prefixedpvnode.yaml.tmpl", {"kubernetes_name_prefix": var.kubernetes_name_prefix})}
+${templatefile("${path.module}/../k8s/tezos-public-node-tmpl/prefixedpvnode.yaml.tmpl", local.kubernetes_variables)}
 EOPPVN
 cat <<EONPN > tezos-public-node/nodepool.yaml
 ${templatefile("${path.module}/../k8s/tezos-public-node-tmpl/nodepool.yaml.tmpl", {"kubernetes_pool_name": var.kubernetes_pool_name})}

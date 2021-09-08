@@ -63,8 +63,8 @@ spec:
         fsGroup: 100
       containers:
       - name: tezos-public-node
-        image: tezos-public-node-with-probes
-        args: [ "tezos-node", "--network", "$(TEZOS_NETWORK)"]
+        image: tezos/tezos
+        args: [ "tezos-node" ]
         ports:
         - containerPort: 9732
           name: tezos-port
@@ -74,13 +74,6 @@ spec:
         resources:
           limits:
             cpu: 0
-        livenessProbe:
-          # pod is considered dead when number of connections drops to zero
-          exec:
-            command:
-            - /usr/local/bin/does-tezos-node-have-connections.sh
-          periodSeconds: 10
-          failureThreshold: 50
         env:
         - name: TEZOS_NETWORK
           valueFrom:
@@ -89,6 +82,26 @@ spec:
               key: TEZOS_NETWORK
         imagePullPolicy: Always
       initContainers:
+      - name: tezos-node-configurator
+        image: tezos-node-configurator
+        resources:
+          limits:
+            cpu: 0
+        volumeMounts:
+        - name: tezos-public-node-pv
+          mountPath: /var/run/tezos/node
+        imagePullPolicy: Always
+        env:
+        - name: HISTORY_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: tezos-configmap
+              key: HISTORY_MODE
+        - name: TEZOS_NETWORK
+          valueFrom:
+            configMapKeyRef:
+              name: tezos-configmap
+              key: TEZOS_NETWORK
       - name: tezos-snapshot-downloader
         image: tezos-snapshot-downloader
         volumeMounts:

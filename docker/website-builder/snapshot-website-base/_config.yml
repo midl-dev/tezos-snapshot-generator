@@ -19,17 +19,15 @@ doks:
         nav:
             - item_name: Mainnet
               item_url: 'https://mainnet.xtz-shots.io/'
-            - item_name: Edo2net
-              item_url: 'https://edo2net.xtz-shots.io/'
-            - item_name: Florencenet
-              item_url: 'https://florencenet.xtz-shots.io/'
+            - item_name: Granadanet
+              item_url: 'https://granadanet.xtz-shots.io/'
 
     footer:
         content:
             logo:
                 text: XTZ-Shots
                 image:
-            copyright: Copyright &copy; 2020. - MIDL.Dev <br>All rights reserved.
+            copyright: Copyright &copy; 2021. - MIDL.Dev <br>All rights reserved.
         social_list:
             - network_name: github
               profile_url: 'https://github.com/midl-dev/tezos-snapshot-generator'

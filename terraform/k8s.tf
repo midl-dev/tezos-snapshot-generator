@@ -161,7 +161,7 @@ resource "google_storage_bucket" "snapshot_bucket" {
 resource "google_storage_bucket_iam_member" "member" {
   bucket = google_storage_bucket.snapshot_bucket.name
   role        = "roles/storage.objectAdmin"
-  member      = "serviceAccount:${google_service_account.payout_account_uploader_account.email}"
+  member      = "serviceAccount:${google_service_account.payout_report_uploader_account.email}"
 }
 
 resource "google_storage_bucket_iam_member" "make_public" {

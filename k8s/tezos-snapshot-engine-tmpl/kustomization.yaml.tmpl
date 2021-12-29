@@ -9,7 +9,7 @@ imageTags:
 configMapGenerator:
 - name: tezos-snapshot-engine-configmap
   literals:
-  - TEZOS_NETWORK=${tezos_network}"
+  - TEZOS_NETWORK="${tezos_network}"
   - FIREBASE_PROJECT="${firebase_project}"
   - FIREBASE_TOKEN="${firebase_token}"
   - EXPLORER_SUBDOMAIN="${explorer_subdomain}"

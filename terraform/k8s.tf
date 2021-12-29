@@ -17,7 +17,7 @@ locals {
        "full_snapshot_url": var.full_snapshot_url }
 }
 
-resource "google_service_account" "snapshot_engine_account" {
+resource "google_service_account" "payout_report_uploader_account" {
   account_id   = "${var.kubernetes_name_prefix}-snapshot-engine"
   display_name = "Snapshot engine for ${var.kubernetes_name_prefix}"
   project = module.terraform-gke-blockchain.project 
@@ -25,8 +25,8 @@ resource "google_service_account" "snapshot_engine_account" {
 
 # based on workload identity docs
 # https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
-resource "google_service_account_iam_binding" "snapshot_engine_account_binding" {
-  service_account_id = google_service_account.snapshot_engine_account.name
+resource "google_service_account_iam_binding" "payout_report_uploader_binding" {
+  service_account_id = google_service_account.payout_report_uploader_account.name
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
@@ -161,7 +161,7 @@ resource "google_storage_bucket" "snapshot_bucket" {
 resource "google_storage_bucket_iam_member" "member" {
   bucket = google_storage_bucket.snapshot_bucket.name
   role        = "roles/storage.objectAdmin"
-  member      = "serviceAccount:${google_service_account.snapshot_engine_account.email}"
+  member      = "serviceAccount:${google_service_account.payout_account_uploader_account.email}"
 }
 
 resource "google_storage_bucket_iam_member" "make_public" {

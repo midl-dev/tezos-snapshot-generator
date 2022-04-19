@@ -1,3 +1,7 @@
+# Tezos snapshot generator is depreated
+
+Please use [tezos-k8s](https://github.com/oxheadalpha/tezos-k8s/) and the [snapshot engine](https://github.com/oxheadalpha/tezos-k8s/tree/master/charts/snapshotEngine).
+
 # Tezos snapshot generator
 
 This is a self-container Kuberneted cluster to generate Tezos snapshots, deployable with just one command.

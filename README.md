@@ -1,4 +1,4 @@
-# Tezos snapshot generator is depreated
+# Tezos snapshot generator is deprecated
 
 Please use [tezos-k8s](https://github.com/oxheadalpha/tezos-k8s/) and the [snapshot engine](https://github.com/oxheadalpha/tezos-k8s/tree/master/charts/snapshotEngine).
 
